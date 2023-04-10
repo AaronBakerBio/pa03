@@ -4,7 +4,7 @@ import os
 def toDict(t):
     ''' t is a tuple (rowid,title, desc,completed)'''
     print('t='+str(t))
-    todo = {'rowid':t[0], 'title':t[1], 'desc':t[2], 'completed':t[3]}
+    todo = {'item #':t[0], 'amount':t[1], 'category':t[2], 'date':t[3]}
     return todo
 
 class TodoList():
@@ -19,10 +19,6 @@ class TodoList():
     def selectAll(self):
         ''' return all of the tasks as a list of dicts.'''
         return self.runQuery("SELECT rowid,* from todo",())
-
-    def selectCompleted(self):
-        ''' return all of the completed tasks as a list of dicts.'''
-        return self.runQuery("SELECT rowid,* from todo where completed=1",())
 
     def add(self,item):
         ''' create a todo item and add it to the todo table '''

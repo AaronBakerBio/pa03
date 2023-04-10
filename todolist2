@@ -38,10 +38,10 @@ import sys
 
 
 # here are some helper functions ...
+p_states = ["quit", "show categories", "add category", "modify category", "show transactions", "add transaction", "delete transaction", "summarize transactions by date", "summarize transactions by month", "summarize transactions by year", "summarize transactions by category", "print this menu"]
 
 def print_usage():
     ''' print an explanation of how to use this command '''
-    p_states = ["quit", "show categories", "add category", "modify category", "show transactions", "add transaction", "delete transaction", "summarize transactions by date", "summarize transactions by month", "summarize transactions by year", "summarize transactions by category", "print this menu"]
     count  = 0
     for x in p_states:
         print(str(count) + ". "+ x)
@@ -62,34 +62,38 @@ def print_todos(todos):
 def process_args(arglist):
     ''' examine args and make appropriate calls to TodoList'''
     todolist = TodoList()
+    arg = arglist[0]
+
     if arglist==[]:
         print_usage()
-    elif arglist[0]=="show":
+    elif arg == p_states[1]:
         print_todos(todolist.selectActive())
-    elif arglist[0]=="showall":
-        print_todos(todos = todolist.selectAll())
-    elif arglist[0]=="showcomplete":
-        print_todos(todolist.selectCompleted())
-    elif arglist[0]=='add':
+    #elif arglist[0]=="showall":
+     #   print_todos(todos = todolist.selectAll() 
+    
+    #add thingy
+    elif arg == p_states[2]:
         if len(arglist)!=3:
             print_usage()
         else:
             todo = {'title':arglist[1],'desc':arglist[2],'completed':0}
             todolist.add(todo)
-    elif arglist[0]=='complete':
+    
+    elif arg == p_states[4]:
         if len(arglist)!= 2:
             print_usage()
         else:
             todolist.setComplete(arglist[1])
-    elif arglist[0]=='delete':
+    #deletion
+    elif arg == p_states[6]:
         if len(arglist)!= 2:
             print_usage()
         else:
             todolist.delete(arglist[1])
+    elif arg == p_states[0]:
+        print("goodbye")
     else:
-        print(arglist,"is not implemented")
-        print_usage()
-
+        print("Invalid")   
 
 def toplevel():
     ''' read the command args and process them'''

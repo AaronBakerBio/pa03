@@ -59,26 +59,49 @@ def print_todos(todos):
         values = tuple(item.values()) #(rowid,title,desc,completed)
         print("%-10s %-10s %-30s %2d"%values)
 
+def print_categories(categories):
+    if len(categories) == 0:
+        print("No categories entered")
+    else:
+        print("Categories")
+        print('-' * 10)
+        category = set(*categories)
+        for x in category:
+            print(x)
+
+
 def process_args(arglist):
     ''' examine args and make appropriate calls to TodoList'''
     todolist = TodoList()
-    arg = arglist[0]
-
-    if arglist==[]:
+    arg = arglist
+    if arglist == None:
         print_usage()
+
+    elif arg == p_states[0]:
+        print("goodbye")
+
     elif arg == p_states[1]:
-        print_todos(todolist.selectActive())
-    #elif arglist[0]=="showall":
-     #   print_todos(todos = todolist.selectAll() 
-    
-    #add thingy
+        #vanilla 
+        print_categories(todolist.selectCategories())
     elif arg == p_states[2]:
-        if len(arglist)!=3:
-            print_usage()
+        category = input("Please enter a category")
+        catbool = todolist.add_category(category)
+        if catbool is True:
+            print("This category already exists")
         else:
-            todo = {'title':arglist[1],'desc':arglist[2],'completed':0}
-            todolist.add(todo)
-    
+            print("Category added")
+    elif arg == p_states[5]:
+        #add transaction
+        arg = arg.removeprefix(p_states[2] + " ")
+        arg = arg.split()
+        task = {}
+        task['item #'] = input("Please enter an item number")
+        task['amount'] = input("Please enter the amount")
+        task['category'] = input("Please enter a category")
+        task['date'] = int(input("Please enter the date"))
+        task['description'] = input("Please enter a description")
+        todolist.add(task)
+        
     elif arg == p_states[4]:
         if len(arglist)!= 2:
             print_usage()
@@ -90,23 +113,18 @@ def process_args(arglist):
             print_usage()
         else:
             todolist.delete(arglist[1])
-    elif arg == p_states[0]:
-        print("goodbye")
+    
     else:
-        print("Invalid")   
+        print_usage()   
 
-def toplevel():
-    ''' read the command args and process them'''
-    if len(sys.argv)==1:
-        # they didn't pass any arguments, 
-        # so prompt for them in a loop
+
+    
+def main():
+    if len(sys.argv) == 1:
         print_usage()
-        args = []
-        while args!=['']:
-            args = input("command> ").split(' ')
-            if args[0]=='add':
-                # join everyting after the name as a string
-                args = ['add',args[1]," ".join(args[2:])]
+        args = ""
+        while args != 'quit':
+            args = input("Enter a choice")
             process_args(args)
             print('-'*40+'\n'*3)
     else:
@@ -115,7 +133,6 @@ def toplevel():
         process_args(args)
         print('-'*40+'\n'*3)
 
-    
-
-toplevel()
+if __name__ == "__main__":
+    main()
 

@@ -2,42 +2,59 @@ import sqlite3
 import os
 
 def toDict(t):
-    ''' t is a tuple (rowid,title, desc,completed)'''
-    print('t='+str(t))
-    todo = {'item #':t[0], 'amount':t[1], 'category':t[2], 'date':t[3]}
-    return todo
+    if len(t) == 1:
+        return t[0]
+    elif len(t) == 5:
+        todo = {'item #':t[0], 'amount':t[1], 'category':t[2], 'date':t[3], 'description':t[4]}
+        return todo
+
 
 class TodoList():
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS todo
                     (title text, desc text, completed int)''',())
-    
-    def selectActive(self):
-        ''' return all of the uncompleted tasks as a list of dicts.'''
-        return self.runQuery("SELECT rowid,* from todo where completed=0",())
-
+        self.runQuery('''CREATE TABLE IF NOT EXISTS categories
+                (category text)''',())
+        
     def selectAll(self):
         ''' return all of the tasks as a list of dicts.'''
-        return self.runQuery("SELECT rowid,* from todo",())
+        return self.runQuery("SELECT item #,* from todo",())
 
-    def add(self,item):
-        ''' create a todo item and add it to the todo table '''
-        return self.runQuery("INSERT INTO todo VALUES(?,?,?)",(item['title'],item['desc'],item['completed']))
+    
+    
+    def add(self, item):
+        '''Create a todo item and add it to the todo table. If it is a new category, add the category too'''
+        category = item['category']
+        self.add_category(category)
+        return self.runQuery("INSERT INTO todo VALUES(?,?,?,?,?,?)",
+                             (item['item #'], item['amount'], category, item['date'], item['description'], 0))
 
+    
+    def add_category(self, category):
+        category_exists = self.runQuery("SELECT * FROM categories WHERE category=?", (category,))
+        if not category_exists:
+            self.runQuery("INSERT INTO categories(category) VALUES(?)", (category,))
+            return False
+        else:
+            return True
+            
+    def selectCategories(self):
+        ''' return all unique categories as a set.'''
+        return self.runQuery("SELECT DISTINCT category FROM categories", (), True)
     def delete(self,rowid):
         ''' delete a todo item '''
         return self.runQuery("DELETE FROM todo WHERE rowid=(?)",(rowid,))
 
-    def setComplete(self,rowid):
-        ''' mark a todo item as completed '''
-        return self.runQuery("UPDATE todo SET completed=1 WHERE rowid=(?)",(rowid,))
-
-    def runQuery(self,query,tuple):
-        ''' return all of the uncompleted tasks as a list of dicts.'''
+    def runQuery(self, query, tuple, category_query=False):
+        '''Return results of query as a list of dicts.'''
         con= sqlite3.connect(os.getenv('USERPROFILE')+'/todo.db')
         cur = con.cursor() 
-        cur.execute(query,tuple)
-        tuples = cur.fetchall()
+        cur.execute(query, tuple)
+        if category_query:
+            results = cur.fetchall()
+        else:
+            results = cur.fetchall()
+            results = [toDict(t) for t in results]
         con.commit()
         con.close()
-        return [toDict(t) for t in tuples]
+        return results

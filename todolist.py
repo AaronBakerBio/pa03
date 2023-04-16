@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import platform
 
 def toDict(t):
     if len(t) == 1:
@@ -47,7 +48,13 @@ class TodoList():
 
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''
-        con= sqlite3.connect(os.getenv('USERPROFILE')+'/todo.db')
+        home_directory = None
+        if platform.system() == 'Windows':
+            home_directory = os.getenv('USERPROFILE')
+        else:
+            home_directory = os.getenv('HOME')
+        con = sqlite3.connect(home_directory + '/todo.db')
+        # con= sqlite3.connect(os.getenv('USERPROFILE')+'/todo.db')
         cur = con.cursor() 
         cur.execute(query, tuple)
         if category_query:

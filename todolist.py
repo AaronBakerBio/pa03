@@ -52,8 +52,22 @@ class TodoList():
         cursor = self.runQuery("UPDATE categories SET category=? WHERE category=?", (new_category, old_category), True)
         categories = self.selectCategories()
 
+    
+    def get_year(self):
+        home_directory = None
+        if platform.system() == 'Windows':
+            home_directory = os.getenv('USERPROFILE')
+        else:
+            home_directory = os.getenv('HOME')
+        con = sqlite3.connect(home_directory + '/todo.db')
+        # con= sqlite3.connect(os.getenv('USERPROFILE')+'/todo.db')
+        cur = con.cursor()     
+        cur.execute("SELECT * FROM todo ORDER BY date", ())
+        result = cur.fetchall()
 
-
+        con.commit()
+        con.close()
+        return result
 
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''

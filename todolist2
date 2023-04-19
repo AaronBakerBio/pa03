@@ -52,11 +52,13 @@ def print_todos(todos):
         print('no tasks to print')
         return
     print('\n')
-    print("%-10s %-10s %-30s %-10s"%('item #','title','desc','completed'))
-    print('-'*40)
+    print("%-10s %-10s %-20s %-12s %-30s" % ('item #', 'amount', 'category', 'date', 'description'))
+    print('-' * 80)
     for item in todos:
-        values = tuple(item.values()) #(rowid,title,desc,completed)
-        print("%-10s %-10s %-30s %2d", values)
+        values = tuple(item.values()) 
+        print("%-10s %-10s %-20s %-12s %-30s" % values)
+
+
 
 def print_categories(categories):
     if len(categories) == 0:

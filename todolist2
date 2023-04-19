@@ -135,7 +135,7 @@ def process_args(arglist):
                 todolist.update_category(arg, my_input)
                 break
     elif arg == p_states[9]:
-        print(todolist.get_year())
+        print(todolist.my_years())
 
     if arg != p_states[11]:
         print_usage()

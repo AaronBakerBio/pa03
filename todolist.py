@@ -54,21 +54,16 @@ class TodoList():
 
     
     def get_year(self):
-        home_directory = None
-        if platform.system() == 'Windows':
-            home_directory = os.getenv('USERPROFILE')
-        else:
-            home_directory = os.getenv('HOME')
-        con = sqlite3.connect(home_directory + '/todo.db')
-        # con= sqlite3.connect(os.getenv('USERPROFILE')+'/todo.db')
-        cur = con.cursor()     
-        cur.execute("SELECT * FROM todo ORDER BY date", ())
-        result = cur.fetchall()
+        return self.runQuery('SELECT "item #", amount, category, date, description FROM todo ORDER BY date', ())
 
-        con.commit()
-        con.close()
-        return result
-
+    def my_years(self):
+        res = self.get_year()
+        my_set = []
+        for x in res:
+            my_set.append(x['date'])
+        d = set(my_set)
+        return d
+    
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''
         home_directory = None

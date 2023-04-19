@@ -56,7 +56,7 @@ def print_todos(todos):
     print('-'*40)
     for item in todos:
         values = tuple(item.values()) #(rowid,title,desc,completed)
-        print("%-10s %-10s %-30s %2d"%values)
+        print("%-10s %-10s %-30s %2d", values)
 
 def print_categories(categories):
     if len(categories) == 0:
@@ -87,7 +87,7 @@ def process_args(arglist):
         category = input("Please enter a category")
         catbool = todolist.add_category(category)
         if catbool is True:
-            print("This category already exists")
+            print("This category already exists, will not be duplicated in the category set")
         else:
             print("Category added")
     elif arg == p_states[5]:

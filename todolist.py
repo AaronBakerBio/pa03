@@ -11,6 +11,7 @@ def toDict(t):
 
 
 class TodoList():
+    
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS todo
                     ("item #" text, amount real, category text, date text, description text, completed int)''',())
@@ -42,9 +43,10 @@ class TodoList():
     def selectCategories(self):
         ''' return all unique categories as a set.'''
         return self.runQuery("SELECT DISTINCT category FROM categories", (), True)
-    def delete(self,rowid):
+    
+    def delete(self, item_num):
         ''' delete a todo item '''
-        return self.runQuery("DELETE FROM todo WHERE rowid=(?)",(rowid,))
+        return self.runQuery("DELETE FROM todo WHERE [item #] = ?", (item_num,))
 
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''

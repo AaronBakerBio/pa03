@@ -1,45 +1,44 @@
-#! /opt/miniconda3/bin/python3
-'''
-todo2 is an app that maintains a todo list
-just as with the todo code in this folder.
-
-but it also uses an Object Relational Mapping (ORM)
-to abstract out the database operations from the
-UI/UX code.
-
-The ORM, TodoList, will map SQL rows with the schema
-    (rowid,title,desc,completed)
-to Python Dictionaries as follows:
-
-(5,'commute','drive to work',false) <-->
-
-{rowid:5,
- title:'commute',
- desc:'drive to work',
- completed:false)
- }
-
-In place of SQL queries, we will have method calls.
-
-This app will store the data in a SQLite database ~/todo.db
-
-Recall that sys.argv is a list of strings capturing the
-command line invocation of this program
-sys.argv[0] is the name of the script invoked from the shell
-sys.argv[1:] is the rest of the arguments (after arg expansion!)
-
-Note the actual implementation of the ORM is hidden and so it 
-could be replaced with PostgreSQL or Pandas or straight python lists
-
-'''
-
 from todolist import TodoList
 import sys
-
+import datetime #used for date comprehension 
 
 # here are some helper functions ...
 p_states = ["quit", "show categories", "add category", "modify category", "show transactions", "add transaction", "delete transaction", "summarize transactions by date", "summarize transactions by month", "summarize transactions by year", "summarize transactions by category", "print this menu"]
 
+class IllegalDateField(Exception):
+    """Raise when backend attempts to go down an out of bounds flow path for date, may only be 0, 1 or 2"""
+
+def valid_num(message):
+    num = ""
+    while type(num) != int:
+        try:
+            num = int(num)
+        except ValueError:
+            num = input(message)
+    return num
+
+def validate_date(flow_path:int):
+    while True:
+        try:
+            print("Please enter a valid ",end = "")
+            if flow_path == 0:
+                mydate = input("day")
+                datetime.date(year=2022, month=1, day=int(mydate))
+                return mydate
+            elif flow_path == 1:
+                my_date = input("month")
+                datetime.date(year=2022, month=int(my_date), day=1)
+                return my_date
+            elif flow_path == 2:
+                my_date = input("year")
+                datetime.date(year = int(my_date), month = 1, day = 1)
+                return my_date
+            else:
+                raise IllegalDateField("Cannot have date that is not part of day, month, year")
+        except ValueError:
+            print("Please correct the date field")
+
+            
 def print_usage():
     ''' print an explanation of how to use this command '''
     count  = 0
@@ -70,6 +69,7 @@ def print_categories(categories):
             print(x)
 
 
+
 def process_args(arglist):
     ''' examine args and make appropriate calls to TodoList'''
     todolist = TodoList()
@@ -95,24 +95,26 @@ def process_args(arglist):
         arg = arg.removeprefix(p_states[2] + " ")
         arg = arg.split()
         task = {}
-        task['item #'] = input("Please enter an item number")
-        task['amount'] = input("Please enter the amount")
-        task['category'] = input("Please enter a category")
-        task['date'] = int(input("Please enter the date"))
+        task['item #'] = valid_num("Please enter a valid item # ")
+        task['amount'] = valid_num("Please enter the amount ")
+        task['category'] = input("Please enter a category ")
+        day = validate_date(0)
+        print(day)
+        month = validate_date(1)
+        print(month)
+        year = validate_date(2)
+        print(year)
+        task['date'] = datetime.date(year=int(year), month=int(month), day=int(day))
         task['description'] = input("Please enter a description")
         todolist.add(task)
         
     elif arg == p_states[4]:
-        if len(arglist)!= 2:
-            print_usage()
-        else:
-            todolist.setComplete(arglist[1])
+        print_todos(todolist.selectAll())
+        
     #deletion
-    elif arg == p_states[6]:
-        if len(arglist)!= 2:
-            print_usage()
-        else:
-            todolist.delete(arglist[1])
+    elif arg.startswith(p_states[6]):
+        arg = arg.lstrip(p_states[6])
+        todolist.delete(arg)
     
     else:
         print_usage()   
@@ -124,7 +126,7 @@ def main():
         print_usage()
         args = ""
         while args != 'quit':
-            args = input("Enter a choice")
+            args = input("Enter a choice ")
             process_args(args)
             print('-'*40+'\n'*3)
     else:

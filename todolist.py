@@ -13,13 +13,13 @@ def toDict(t):
 class TodoList():
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS todo
-                    (title text, desc text, completed int)''',())
+                    ("item #" text, amount real, category text, date text, description text, completed int)''',())
         self.runQuery('''CREATE TABLE IF NOT EXISTS categories
                 (category text)''',())
         
     def selectAll(self):
         ''' return all of the tasks as a list of dicts.'''
-        return self.runQuery("SELECT item #,* from todo",())
+        return self.runQuery('SELECT "item #", amount, category, date, description FROM todo', ())
 
     
     

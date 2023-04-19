@@ -8,6 +8,13 @@ p_states = ["quit", "show categories", "add category", "modify category", "show 
 class IllegalDateField(Exception):
     """Raise when backend attempts to go down an out of bounds flow path for date, may only be 0, 1 or 2"""
 
+def get_valid_category():
+    while True:
+        category = input("Please enter a category: ").strip()
+        if not category:
+            print("Category cannot be empty or just whitespace. Please try again.")
+        else:
+            return category
 def valid_num(message):
     num = ""
     while type(num) != int:
@@ -61,15 +68,16 @@ def print_todos(todos):
 
 
 def print_categories(categories):
+    """Function print_categories prints categories"""
     if len(categories) == 0:
         print("No categories entered")
     else:
         print("Categories")
         print('-' * 10)
-        category = set(*categories)
-        for x in category:
-            print(x)
-
+        print(categories)
+        for x in categories:
+            print(x[0])
+    print('-' * 10)
 
 
 def process_args(arglist):
@@ -86,8 +94,7 @@ def process_args(arglist):
         #vanilla 
         print_categories(todolist.selectCategories())
     elif arg == p_states[2]:
-        category = input("Please enter a category")
-        catbool = todolist.add_category(category)
+        catbool = todolist.add_category(get_valid_category())
         if catbool is True:
             print("This category already exists, will not be duplicated in the category set")
         else:
@@ -99,7 +106,7 @@ def process_args(arglist):
         task = {}
         task['item #'] = valid_num("Please enter a valid item # ")
         task['amount'] = valid_num("Please enter the amount ")
-        task['category'] = input("Please enter a category ")
+        task['category'] = input("Please enter a category ").lstrip()
         day = validate_date(0)
         print(day)
         month = validate_date(1)
@@ -107,21 +114,30 @@ def process_args(arglist):
         year = validate_date(2)
         print(year)
         task['date'] = datetime.date(year=int(year), month=int(month), day=int(day))
-        task['description'] = input("Please enter a description")
+        task['description'] = get_valid_category()
         todolist.add(task)
-        
     elif arg == p_states[4]:
         print_todos(todolist.selectAll())
-        
     #deletion
     elif arg.startswith(p_states[6]):
         arg = arg.lstrip(p_states[6])
         todolist.delete(arg)
+    elif arg == p_states[11]:
+        print_usage()
+    elif arg.startswith(p_states[3]):
+        arg = arg[len(p_states[3]):]
+        arg = arg.lstrip()
+        while True:
+            my_input = input("What should the new category be?")
+            if(my_input.strip() == ""):
+                continue
+            else:
+                todolist.update_category(arg, my_input)
+                break
+
+    if arg != p_states[11]:
+        print_usage()
     
-    else:
-        print_usage()   
-
-
     
 def main():
     if len(sys.argv) == 1:
@@ -130,7 +146,7 @@ def main():
         while args != 'quit':
             args = input("Enter a choice ")
             process_args(args)
-            print('-'*40+'\n'*3)
+            print('-'*40+'\n')
     else:
         # read the args and process them
         args = sys.argv[1:]

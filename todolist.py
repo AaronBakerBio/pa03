@@ -47,6 +47,12 @@ class TodoList():
         ''' delete a todo item '''
         return self.runQuery("DELETE FROM todo WHERE [item #] = ?", (item_num,))
 
+    def update_category(self, old_category, new_category):
+        cursor = self.runQuery("UPDATE todo SET category=? WHERE category=?", (new_category, old_category))
+        cursor = self.runQuery("UPDATE categories SET category=? WHERE category=?", (new_category, old_category), True)
+        categories = self.selectCategories()
+
+
 
 
     def runQuery(self, query, tuple, category_query=False):

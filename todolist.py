@@ -56,11 +56,18 @@ class TodoList():
     def get_year(self):
         return self.runQuery('SELECT "item #", amount, category, date, description FROM todo ORDER BY date', ())
 
-    def my_years(self):
+    def get_dates(self):
         res = self.get_year()
         my_set = []
         for x in res:
             my_set.append(x['date'])
+        return my_set
+
+    def my_years(self):
+        dates = self.get_dates()
+        my_set = []
+        for date in dates:
+            my_set.append(date[:4]) # append first four characters of the date string
         d = set(my_set)
         return d
     

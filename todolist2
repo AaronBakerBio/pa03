@@ -134,7 +134,7 @@ def process_args(arglist):
             else:
                 todolist.update_category(arg, my_input)
                 break
-
+    
     if arg != p_states[11]:
         print_usage()
     

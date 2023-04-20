@@ -134,25 +134,10 @@ def process_args(arglist):
             else:
                 todolist.update_category(arg, my_input)
                 break
-    elif arg == p_states[9]:
-        my_years = todolist.my_years()
-        my_years = list(my_years)
-        if(my_years is not None):
-            my_list = todolist.selectAll()
-            year_list = []
-            for year in my_years:
-                count = sum(1 for item in my_list if item['date'].startswith(year))
-                year_list.append(count)
-            print("Items by year:")
-            for x in range(len(year_list)):
-                print(f'{my_years[x]}:   {year_list[x]}')
-        else:
-            print("There are no items in the list to account for by year.")
+    
     if arg != p_states[11]:
         print_usage()
-    print(todolist.get_day())
-    print(todolist.get_month())
-    print(todolist.my_years())
+    
     
 def main():
     if len(sys.argv) == 1:

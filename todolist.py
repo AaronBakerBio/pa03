@@ -71,20 +71,6 @@ class TodoList():
         d = set(my_set)
         return d
     
-    def get_month(self):
-        dates = self.get_dates()
-        my_set = set()
-        for date in dates:
-            my_set.add(date[5:7])
-        return my_set
-    
-    def get_day(self):
-        dates = self.get_dates()
-        my_set = set()
-        for date in dates:
-            my_set.add(date[8:])
-        return my_set
-
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''
         home_directory = None

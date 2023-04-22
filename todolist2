@@ -15,6 +15,7 @@ def get_valid_category():
             print("Category cannot be empty or just whitespace. Please try again.")
         else:
             return category
+
 def valid_num(message):
     num = ""
     while type(num) != int:
@@ -79,9 +80,8 @@ def print_categories(categories):
     print('-' * 10)
 
 
-def process_args(arglist):
+def process_args(arglist, todolist):
     ''' examine args and make appropriate calls to TodoList'''
-    todolist = TodoList()
     arg = arglist
     if arglist == None:
         print_usage()
@@ -130,17 +130,18 @@ def process_args(arglist):
                 break      
     
 def main():
+    todolist = TodoList()
     if len(sys.argv) == 1:
         print_usage()
         args = ""
         while args != 'quit':
-            args = input("Enter a choice ")
-            process_args(args)
+            args = input("Enter a choice ")            
+            process_args(args,todolist)
             print('-'*40+'\n')
     else:
         # read the args and process them
         args = sys.argv[1:]
-        process_args(args)
+        process_args(args, todolist)
         print('-'*40+'\n'*3)
 
 if __name__ == "__main__":

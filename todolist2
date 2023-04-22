@@ -74,7 +74,6 @@ def print_categories(categories):
     else:
         print("Categories")
         print('-' * 10)
-        print(categories)
         for x in categories:
             print(x[0])
     print('-' * 10)
@@ -101,18 +100,13 @@ def process_args(arglist):
             print("Category added")
     elif arg == p_states[5]:
         #add transaction
-        arg = arg.removeprefix(p_states[2] + " ")
-        arg = arg.split()
         task = {}
         task['item #'] = valid_num("Please enter a valid item # ")
         task['amount'] = valid_num("Please enter the amount ")
         task['category'] = input("Please enter a category ").lstrip()
         day = validate_date(0)
-        print(day)
         month = validate_date(1)
-        print(month)
         year = validate_date(2)
-        print(year)
         task['date'] = datetime.date(year=int(year), month=int(month), day=int(day))
         task['description'] = get_valid_category()
         todolist.add(task)
@@ -133,11 +127,7 @@ def process_args(arglist):
                 continue
             else:
                 todolist.update_category(arg, my_input)
-                break
-    
-    if arg != p_states[11]:
-        print_usage()
-    
+                break      
     
 def main():
     if len(sys.argv) == 1:

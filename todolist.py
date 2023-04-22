@@ -13,7 +13,7 @@ def toDict(t):
 class TodoList():
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS todo
-                    ("item #" text, amount real, category text, date text, description text, completed int)''',())
+                    ("item #" text, amount real, category text, date text, description text)''',())
         self.runQuery('''CREATE TABLE IF NOT EXISTS categories
                 (category text)''',())
         
@@ -27,8 +27,8 @@ class TodoList():
         '''Create a todo item and add it to the todo table. If it is a new category, add the category too'''
         category = item['category']
         self.add_category(category)
-        return self.runQuery("INSERT INTO todo VALUES(?,?,?,?,?,?)",
-                             (item['item #'], item['amount'], category, item['date'], item['description'], 0))
+        return self.runQuery("INSERT INTO todo VALUES(?,?,?,?,?)",
+                             (item['item #'], item['amount'], category, item['date'], item['description']))
 
     
     def add_category(self, category):
@@ -84,6 +84,9 @@ class TodoList():
         for date in dates:
             my_set.add(date[8:])
         return my_set
+    
+    def get_date(self, date):
+        return len(self.runQuery('SELECT * FROM todo WHERE date = ?', (date,)))
 
     def runQuery(self, query, tuple, category_query=False):
         '''Return results of query as a list of dicts.'''

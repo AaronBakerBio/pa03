@@ -21,8 +21,6 @@ class TodoList():
         ''' return all of the tasks as a list of dicts.'''
         return self.runQuery('SELECT "item #", amount, category, date, description FROM todo', ())
 
-    
-    
     def add(self, item):
         '''Create a todo item and add it to the todo table. If it is a new category, add the category too'''
         category = item['category']
@@ -30,7 +28,6 @@ class TodoList():
         return self.runQuery("INSERT INTO todo VALUES(?,?,?,?,?)",
                              (item['item #'], item['amount'], category, item['date'], item['description']))
 
-    
     def add_category(self, category):
         category_exists = self.runQuery("SELECT * FROM categories WHERE category=?", (category,))
         if not category_exists:
@@ -52,7 +49,10 @@ class TodoList():
         cursor = self.runQuery("UPDATE categories SET category=? WHERE category=?", (new_category, old_category), True)
         categories = self.selectCategories()
 
-    
+    def destroy_all(self):
+        self.runQuery('DELETE FROM todo', ())
+        self.runQuery('DELETE FROM categories', ())
+
     def get_year(self):
         return self.runQuery('SELECT "item #", amount, category, date, description FROM todo ORDER BY date', ())
 

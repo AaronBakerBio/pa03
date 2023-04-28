@@ -1,4 +1,4 @@
-from todolist import TodoList
+from transaction import TodoList
 import sys
 import datetime #used for date comprehension 
 
@@ -110,6 +110,15 @@ def process_args(arglist, todolist):
         task['date'] = datetime.date(year=int(year), month=int(month), day=int(day))
         task['description'] = get_valid_category()
         todolist.add(task)
+        
+    # Test date, get date (test types needed)
+    elif arg == p_states[7]:
+        day = validate_date(0)
+        month = validate_date(1)
+        year = validate_date(2)
+        my_date = datetime.date(year=int(year), month=int(month), day=int(day))
+        print(f'There were {todolist.get_date(my_date)} transactions on {my_date}.')
+        
     elif arg == p_states[4]:
         print_todos(todolist.selectAll())
     #deletion

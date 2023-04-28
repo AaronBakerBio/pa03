@@ -125,6 +125,16 @@ def process_args(arglist, todolist):
     elif arg.startswith(p_states[6]):
         arg = arg.lstrip(p_states[6])
         todolist.delete(arg)
+    elif arg == p_states[10]:
+        my_categories = [category[0] for category in todolist.selectCategories()]
+        my_list = todolist.selectAll()
+        category_list = []
+        for category in my_categories:
+            count = sum(1 for item in my_list if item['category'] == category)
+            category_list.append(count)
+        print("Items by category:")
+        for x in range(len(category_list)):
+            print(f'{my_categories[x]}:   {category_list[x]}')
     elif arg == p_states[11]:
         print_usage()
     elif arg.startswith(p_states[3]):

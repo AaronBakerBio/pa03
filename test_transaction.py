@@ -49,6 +49,7 @@ def test_destroy_all(todo_list: TodoList):
 
 
 def test_update_category(todo_list: TodoList):
+    """Aaron added a method to test the update_category functionality."""
     old_category = 'grocery'
     new_category = 'supermarket'
     item = {'item #': '1', 'amount': 10, 'category': old_category, 'date': '2023-05-03', 'description': 'buy milk'}
@@ -80,6 +81,7 @@ def test_add_category(todo_list: TodoList):
 
 
 def test_select_categories(todo_list: TodoList):
+    """Aaron and Eugenio made a method to test the category selector"""
     todo_list.destroy_all()
     todo_list.add_category('grocery')
     todo_list.add_category('stationery')

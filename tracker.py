@@ -137,6 +137,29 @@ def process_args(arglist, todolist):
             print(f'{my_categories[x]}:   {category_list[x]}')
     elif arg == p_states[11]:
         print_usage()
+
+    elif arg == p_states[8]:
+        # get all transactions and group them by month
+        transactions = todolist.selectAll()
+        transactions_by_month = {}
+        for transaction in transactions:
+            date_obj = datetime.datetime.strptime(transaction['date'], "%Y-%m-%d")
+            month = date_obj.month
+            year = date_obj.year
+            key = f"{year}-{month:02d}"
+            if key in transactions_by_month:
+                transactions_by_month[key].append(transaction)
+            else:
+                transactions_by_month[key] = [transaction]
+
+        # print the transactions by month
+        if len(transactions_by_month) == 0:
+            print("No transactions found.")
+        else:
+            for key in sorted(transactions_by_month.keys()):
+                print(f"Transactions for {key}:")
+                print_todos(transactions_by_month[key])
+        
     elif arg.startswith(p_states[3]):
         arg = arg[len(p_states[3]):]
         arg = arg.lstrip()

@@ -13,6 +13,7 @@ def test_add():
     assert(todo.selectAll() == [])
 
 def test_delete():
+    """Method to test the delete method from the transaction.py class"""
     todo = TodoList()
     todo.destroy_all()
     todo.delete(1)

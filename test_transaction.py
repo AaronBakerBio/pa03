@@ -60,7 +60,11 @@ def test_update_category(todo_list: TodoList):
     assert any(new_category in cat for cat in categories)
     assert not any(old_category in cat for cat in categories)
 
+
 def test_get_date(todo_list: TodoList):
+    '''Method to test the get_date method from the transaction.py class
+        By Aby
+    '''
     item = {'item #': '1', 'amount': 10, 'category': 'grocery', 'date': '2023-05-03', 'description': 'buy milk'}
     todo_list.destroy_all()
     todo_list.add(item)
@@ -68,6 +72,7 @@ def test_get_date(todo_list: TodoList):
     assert date_count == 1
 
 def test_add_category(todo_list: TodoList):
+    '''Method to test the add_category method from the transaction.py class'''
     category = 'utilities'
     todo_list.add_category(category)
     categories = todo_list.selectCategories()

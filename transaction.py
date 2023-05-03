@@ -54,9 +54,15 @@ class TodoList():
         self.runQuery('DELETE FROM categories', ())
 
     def get_year(self):
+        '''Return a list of all dates in the database.
+        By Aby
+        '''
         return self.runQuery('SELECT "item #", amount, category, date, description FROM todo ORDER BY date', ())
 
     def get_dates(self):
+        '''Return a list of all dates in the database.
+            By Aby
+        '''
         res = self.get_year()
         my_set = []
         for x in res:
@@ -64,6 +70,9 @@ class TodoList():
         return my_set
 
     def my_years(self):
+        '''Return a set of all years in the database.
+        By Aby
+        '''
         dates = self.get_dates()
         my_set = []
         for date in dates:
@@ -72,6 +81,9 @@ class TodoList():
         return d
     
     def get_month(self):
+        ''' Return a set of all months in the database.
+        By Aby
+        '''
         dates = self.get_dates()
         my_set = set()
         for date in dates:
@@ -79,6 +91,9 @@ class TodoList():
         return my_set
     
     def get_day(self):
+        ''' Return a set of all days in the database.
+        By Aby
+        '''
         dates = self.get_dates()
         my_set = set()
         for date in dates:
@@ -86,6 +101,9 @@ class TodoList():
         return my_set
     
     def get_date(self, date):
+        ''' Return a list of all items on a given date.
+        By Aby
+        '''
         return len(self.runQuery('SELECT * FROM todo WHERE date = ?', (date,)))
 
     def runQuery(self, query, tuple, category_query=False):

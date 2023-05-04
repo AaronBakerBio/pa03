@@ -1,3 +1,5 @@
+"""This portion of the menu was largely implemented by Rue and Eugenio"""
+
 import sqlite3
 import os
 import platform

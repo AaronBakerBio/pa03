@@ -1,3 +1,5 @@
+"""This portion of the menu was implemented as a team and was done primarily on Aaron's computer. We met as a group and collaborated behind
+Aaron's computer."""
 from transaction import TodoList
 import sys
 import datetime #used for date comprehension 

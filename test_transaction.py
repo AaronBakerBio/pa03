@@ -99,6 +99,7 @@ def test_select_categories(todo_list: TodoList):
 
 
 def test_get_year(todo_list: TodoList):
+    """Method by Rue, tests getting transactions by year. Eugenio assisted."""
     todo_list.destroy_all()
     item1 = {'item #': '1', 'amount': 10, 'category': 'grocery', 'date': '2022-05-03', 'description': 'buy milk'}
     item2 = {'item #': '2', 'amount': 20, 'category': 'stationery', 'date': '2023-05-04', 'description': 'buy pens'}

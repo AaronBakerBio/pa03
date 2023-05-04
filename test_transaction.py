@@ -3,6 +3,7 @@ from transaction import TodoList
 
 
 def test_add():
+    """Method written by Rue to test adding to the menu. By Eugenio"""
     todo = TodoList()
     todo.destroy_all()
     todo.add({'item #': 1, 'amount': 10.0, 'category': 'food', 'date': '2018-01-01', 'description': 'test'})
@@ -13,16 +14,18 @@ def test_add():
     assert(todo.selectAll() == [])
 
 def test_delete():
-    """Method to test the delete method from the transaction.py class"""
+    """Method to test the delete method from the transaction.py class, by Eugenio"""
     todo = TodoList()
     todo.destroy_all()
     todo.delete(1)
 
 @pytest.fixture
 def todo_list():
+    """returns a new todolist, by Eugenio"""
     return TodoList()
 
 def test_add_and_select_all(todo_list: TodoList):
+    """By aaron, tests adding and select_all cursor method."""
     item = {'item #': '1', 'amount': 10, 'category': 'grocery', 'date': '2023-05-03', 'description': 'buy milk'}
     todo_list.add(item)
     result = todo_list.selectAll()
@@ -31,6 +34,7 @@ def test_add_and_select_all(todo_list: TodoList):
 
 
 def test_delete(todo_list: TodoList):
+    """By Aaron, tests deleting from the menu."""
     item = {'item #': '1', 'amount': 10, 'category': 'grocery', 'date': '2023-05-03', 'description': 'buy milk'}
     todo_list.add(item)
     todo_list.delete(item['item #'])
@@ -39,6 +43,7 @@ def test_delete(todo_list: TodoList):
 
 
 def test_destroy_all(todo_list: TodoList):
+    """Second test for deletion, by aaron."""
     item1 = {'item #': '1', 'amount': 10, 'category': 'grocery', 'date': '2023-05-03', 'description': 'buy milk'}
     item2 = {'item #': '2', 'amount': 20, 'category': 'stationery', 'date': '2023-05-04', 'description': 'buy pens'}
     todo_list.add(item1)

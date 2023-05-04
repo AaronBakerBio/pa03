@@ -9,6 +9,7 @@ class IllegalDateField(Exception):
     """Raise when backend attempts to go down an out of bounds flow path for date, may only be 0, 1 or 2"""
 
 def get_valid_category():
+    """Checks if a category is valid, by Rue"""
     while True:
         category = input("Please enter a description: ").strip()
         if not category:
@@ -17,6 +18,7 @@ def get_valid_category():
             return category
 
 def valid_num(message):
+    """Checks if a numeric argument is numeric, by Aaron"""
     num = ""
     while type(num) != int:
         try:
@@ -26,6 +28,7 @@ def valid_num(message):
     return num
 
 def validate_date(flow_path:int):
+    """Written by rue, validates the dates passed"""
     while True:
         try:
             print("Please enter a valid ",end = "")
@@ -48,14 +51,14 @@ def validate_date(flow_path:int):
 
             
 def print_usage():
-    ''' print an explanation of how to use this command '''
+    ''' print an explanation of how to use this command, by Aby '''
     count  = 0
     for x in p_states:
         print(str(count) + ". "+ x)
         count += 1
         
 def print_todos(todos):
-    ''' print the todo items '''
+    ''' print the todo items, by Eugenio '''
     if len(todos)==0:
         print('no tasks to print')
         return
@@ -69,7 +72,7 @@ def print_todos(todos):
 
 
 def print_categories(categories):
-    """Function print_categories prints categories"""
+    """Function print_categories prints categories, by Rue"""
     if len(categories) == 0:
         print("No categories entered")
     else:
@@ -81,14 +84,27 @@ def print_categories(categories):
 
 
 def process_args(arglist, todolist):
-    ''' examine args and make appropriate calls to TodoList'''
+    ''' examine args and make appropriate calls to TodoList, by Eugenio and Rue'''
     arg = arglist
     if arglist == None:
         print_usage()
 
     elif arg == p_states[0]:
         print("goodbye")
-
+    elif arg == p_states[9]:
+        my_years = todolist.my_years()
+        my_years = list(my_years)
+        if(my_years is not None):
+            my_list = todolist.selectAll()
+            year_list = []
+            for year in my_years:
+                count = sum(1 for item in my_list if item['date'].startswith(year))
+                year_list.append(count)
+            print("Items by year:")
+            for x in range(len(year_list)):
+                print(f'{my_years[x]}:   {year_list[x]}')
+        else:
+            print("There are no items in the list to account for by year.")
     elif arg == p_states[1]:
         #vanilla 
         print_categories(todolist.selectCategories())
@@ -172,6 +188,7 @@ def process_args(arglist, todolist):
                 break      
     
 def main():
+    """This main method written as a team on Aaron's computer."""
     todolist = TodoList()
     if len(sys.argv) == 1:
         print_usage()

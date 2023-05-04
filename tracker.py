@@ -11,7 +11,7 @@ class IllegalDateField(Exception):
 def get_valid_category():
     """Checks if a category is valid, by Rue"""
     while True:
-        category = input("Please enter a description: ").strip()
+        category = input("Please enter a category name: ").strip()
         if not category:
             print("Category cannot be empty or just whitespace. Please try again.")
         else:
